@@ -1,0 +1,76 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "oncofind"
+version = "0.1.0"
+description = "Pan-cancer biomarker discovery from the command line"
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [{ name = "Sanjeevi", email = "sanjeevis719@gmail.com" }]
+keywords = ["bioinformatics", "cancer", "genomics", "tcga", "rna-seq", "biomarker"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+requires-python = ">=3.10"
+dependencies = [
+    "typer[all]>=0.12",
+    "rich>=13.7",
+    "duckdb>=0.10",
+    "pandas>=2.0",
+    "numpy>=1.26",
+    "scipy>=1.12",
+    "statsmodels>=0.14",
+    "scikit-learn>=1.4",
+    "lifelines>=0.27",
+    "pydeseq2>=0.4",
+    "plotly>=5.20",
+    "kaleido>=0.2",
+    "httpx>=0.27",
+    "pydantic>=2.6",
+    "pydantic-settings>=2.2",
+    "jinja2>=3.1",
+    "pyarrow>=15.0",
+    "tqdm>=4.66",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-cov>=4.1",
+    "pytest-asyncio>=0.23",
+    "ruff>=0.4",
+    "mypy>=1.9",
+    "pre-commit>=3.7",
+]
+docs = [
+    "mkdocs>=1.5",
+    "mkdocs-material>=9.5",
+    "mkdocstrings[python]>=0.24",
+]
+
+[project.scripts]
+oncofind = "oncofind.cli.main:app"
+
+[project.urls]
+Homepage = "https://github.com/sanjeeviutchav/oncofind"
+Documentation = "https://sanjeeviutchav.github.io/oncofind"
+"Bug Tracker" = "https://github.com/sanjeeviutchav/oncofind/issues"
+
+[tool.ruff]
+line-length = 88
+select = ["E", "F", "I", "N", "W"]
+
+[tool.mypy]
+strict = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--cov=oncofind --cov-report=term-missing"

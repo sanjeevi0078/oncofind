@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>oncofind Report — {{ cancer_type }}</title>
+    <!-- Premium Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Plotly CDN (required to render embedded plots) -->
+    <script src="https://cdn.plotly.com/plotly-latest.min.js"></script>
+
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --primary-hover: #4338CA;
+            --background: #F9FAFB;
+            --surface: #FFFFFF;
+            --text: #111827;
+            --text-secondary: #4B5563;
+            --border: #E5E7EB;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header Card */
+        .header-card {
+            background: linear-gradient(135deg, #1E1B4B 0%, #312E81 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-card::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 300px;
+            height: 300px;
+            background: rgba(79, 70, 229, 0.3);
+            border-radius: 50%;
+            filter: blur(80px);
+        }
+
+        .header-tagline {
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            color: #A5B4FC;
+            margin-bottom: 0.5rem;
+        }
+
+        .header-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            padding-top: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .meta-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #C7D2FE;
+        }
+
+        .meta-value {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        /* Section Cards */
+        .card {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--background);
+            color: #1F2937;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* Plot Containers */
+        .plot-container {
+            width: 100%;
+            height: 550px;
+            background-color: #FFFFFF;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .plot-container > div {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Tables */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background-color: #F3F4F6;
+            color: var(--text-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background-color: #F9FAFB;
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: 9999px;
+            text-transform: uppercase;
+        }
+
+        .badge-up {
+            background-color: #FEE2E2;
+            color: var(--danger);
+        }
+
+        .badge-down {
+            background-color: #DBEAFE;
+            color: var(--primary);
+        }
+
+        .badge-ns {
+            background-color: #F3F4F6;
+            color: var(--text-secondary);
+        }
+
+        .badge-druggable {
+            background-color: #D1FAE5;
+            color: #065F46;
+            border: 1px solid #A7F3D0;
+            font-size: 0.75rem;
+            cursor: help;
+        }
+
+        /* Methodology */
+        .method-block {
+            background-color: #F3F4F6;
+            border-left: 4px solid var(--primary);
+            padding: 1.5rem;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 1rem;
+        }
+
+        .method-title {
+            font-weight: 600;
+            color: #1F2937;
+            margin-bottom: 0.5rem;
+        }
+
+        footer {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            margin-top: 3rem;
+            border-top: 1px solid var(--border);
+            padding-top: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Header -->
+    <header class="header-card">
+        <div class="header-tagline">Pan-Cancer Biomarker Discovery CLI</div>
+        <h1 class="header-title">Oncofind Analysis Report</h1>
+        
+        <div class="meta-grid">
+            <div class="meta-item">
+                <span class="meta-label">Cancer Cohort</span>
+                <span class="meta-value">TCGA-{{ cancer_type | upper }}</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">Comparison Groupby</span>
+                <span class="meta-value">{{ groupby }}</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">Group A (vs B)</span>
+                <span class="meta-value">{{ group_a_val }} (N={{ n_group_a }})</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">Group B (vs A)</span>
+                <span class="meta-value">{{ group_b_val }} (N={{ n_group_b }})</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">DEG Method</span>
+                <span class="meta-value">{{ method | upper }}</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Plots section -->
+    {% if volcano_html %}
+    <section class="card">
+        <h2 class="card-title">Volcano Plot <span style="font-weight: normal; font-size: 0.85rem; color: var(--text-secondary);">Differential Expression Significance</span></h2>
+        <div class="plot-container">
+            {{ volcano_html | safe }}
+        </div>
+    </section>
+    {% endif %}
+
+    {% if heatmap_html %}
+    <section class="card">
+        <h2 class="card-title">Expression Heatmap <span style="font-weight: normal; font-size: 0.85rem; color: var(--text-secondary);">Top Differentially Expressed Genes (Row Z-Scores)</span></h2>
+        <div class="plot-container">
+            {{ heatmap_html | safe }}
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Top Genes Table -->
+    <section class="card">
+        <h2 class="card-title">Top Differentially Expressed Genes</h2>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Gene</th>
+                        <th>Log2 Fold Change</th>
+                        <th>P-Value</th>
+                        <th>Adjusted P-Value (FDR)</th>
+                        <th>Direction</th>
+                        <th>Targetable Therapy</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for gene in top_degs %}
+                    <tr>
+                        <td><strong>{{ gene.gene_symbol }}</strong></td>
+                        <td style="color: {% if gene.log2FC > 0 %}var(--danger){% else %}var(--primary){% endif %}; font-weight: 500;">
+                            {{ "%.4f" | format(gene.log2FC) }}
+                        </td>
+                        <td>{{ "%.4e" | format(gene.pvalue) }}</td>
+                        <td>{{ "%.4e" | format(gene.padj) }}</td>
+                        <td>
+                            {% if gene.padj < fdr_threshold and gene.log2FC >= fc_threshold %}
+                            <span class="badge badge-up">UP</span>
+                            {% elif gene.padj < fdr_threshold and gene.log2FC <= -fc_threshold %}
+                            <span class="badge badge-down">DOWN</span>
+                            {% else %}
+                            <span class="badge badge-ns">NS</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if gene.is_druggable %}
+                            <span class="badge badge-druggable" title="FDA target for: {{ gene.drugs | join(', ') }}">
+                                Yes ({{ gene.drugs | join(', ') }})
+                            </span>
+                            {% else %}
+                            <span style="color: var(--text-secondary); font-size: 0.8rem;">No known drugs</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Methodology Notes -->
+    {% if include_methods %}
+    <section class="card">
+        <h2 class="card-title">Methodology Notes</h2>
+        <div class="method-block">
+            <div class="method-title">Differential Expression Analysis</div>
+            <p>
+                RNA-seq count matrices are queried from the DuckDB + Parquet local database.
+                Counts are normalized for sequencing library depth (CPM) or processed using PyDESeq2's negative binomial Generalized Linear Model.
+                If PyDESeq2 convergence fails or sample size is small, a fallback Welch's t-test on log-transformed counts is performed.
+                P-values are adjusted for multiple testing using the Benjamini-Hochberg (FDR) procedure.
+            </p>
+        </div>
+        <div class="method-block">
+            <div class="method-title">Batch Correction (Location-Scale Standardization)</div>
+            <p>
+                If multiple sequencing plates or batches are identified in clinical metadata, 
+                a location-and-scale batch standardization is applied to prevent batch artifacts from skewing results.
+            </p>
+        </div>
+        <div class="method-block">
+            <div class="method-title">Cross-Cancer Consistency Score (CCCS)</div>
+            <p>
+                For pan-cancer gene validation, the CCCS combines Directionality (w=0.25), Fold Change Magnitude (w=0.25), Survival Significance (w=0.35), and Statistical Significance (w=0.15).
+                Scores are scaled by the consistency ratio of significant cancer types.
+            </p>
+        </div>
+    </section>
+    {% endif %}
+
+    <footer>
+        <p>Report generated by <strong>oncofind</strong> v0.1.0 • Running Python • MIT License</p>
+    </footer>
+</div>
+
+</body>
+</html>

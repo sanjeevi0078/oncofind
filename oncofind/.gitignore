@@ -1,0 +1,21 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Unit test / coverage reports
+.coverage
+.coverage.*
+.pytest_cache/
+.cache/
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Project specific
+oncofind_results/
+benchmark_report.csv
+.oncofind/
