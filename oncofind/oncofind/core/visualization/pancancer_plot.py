@@ -146,7 +146,7 @@ def plot_pancancer_comparison(
     # Try saving PNG
     try:
         output_png_path = output_html_path.with_suffix(".png")
-        fig.write_image(str(output_png_path), engine="kaleido")
+        fig.write_image(str(output_png_path))
     except Exception as e:
         logger.warning(f"Failed to export static PNG via Kaleido (can be ignored): {e}")
         

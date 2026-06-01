@@ -3,7 +3,7 @@
 > **Pan-cancer biomarker discovery from the command line.**  
 > Integrates TCGA RNA-seq, clinical data, survival endpoints, and external validation into a reproducible, publication-ready pipeline.
 
-[![Tests](https://img.shields.io/badge/tests-21%20passed-brightgreen)](tests/)
+[![Tests](https://img.shields.io/badge/tests-26%20passed-brightgreen)](tests/)
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue)](pyproject.toml)
 [![TCGA](https://img.shields.io/badge/data-TCGA%20GDC-orange)](https://portal.gdc.cancer.gov)
 [![COSMIC](https://img.shields.io/badge/validated-COSMIC%20CGC-red)](https://cancer.sanger.ac.uk/census)
