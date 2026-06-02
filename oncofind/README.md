@@ -107,6 +107,11 @@ oncofind deg --cancer BRCA --mode tumor_vs_normal --method deseq2
 
 Outputs: `volcano_BRCA.html`, `heatmap_BRCA.html`, `BRCA_deg_results.csv`
 
+<p align="center">
+  <img src="docs/images/volcano.png" width="45%" />
+  <img src="docs/images/heatmap.png" width="45%" />
+</p>
+
 ### 3. Survival analysis
 
 ```bash
@@ -116,6 +121,10 @@ oncofind survival --cancer BRCA --gene ERBB2
 ```
 
 Outputs: `BRCA_TP53_survival.html` (Kaplan-Meier), `BRCA_TP53_survival_groups.csv`
+
+<p align="center">
+  <img src="docs/images/survival.png" width="70%" />
+</p>
 
 ### 4. Pan-cancer scoring (CCCS)
 
