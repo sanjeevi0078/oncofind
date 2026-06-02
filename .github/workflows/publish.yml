@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       id-token: write  # Required for trusted publishing
+      contents: read   # Required to checkout the repository
     environment:
       name: pypi
       url: https://pypi.org/p/oncofind
