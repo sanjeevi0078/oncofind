@@ -11,6 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       id-token: write  # Required for trusted publishing
+    environment:
+      name: pypi
+      url: https://pypi.org/p/oncofind
     defaults:
       run:
         working-directory: oncofind
