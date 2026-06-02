@@ -11,6 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       id-token: write  # Required for trusted publishing
+    defaults:
+      run:
+        working-directory: oncofind
 
     steps:
     - uses: actions/checkout@v4
@@ -32,3 +35,4 @@ jobs:
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
         skip-existing: true
+        packages-dir: oncofind/dist/
