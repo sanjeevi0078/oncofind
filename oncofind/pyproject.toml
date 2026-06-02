@@ -59,9 +59,9 @@ docs = [
 oncofind = "oncofind.cli.main:app"
 
 [project.urls]
-Homepage = "https://github.com/sanjeeviutchav/oncofind"
-Documentation = "https://sanjeeviutchav.github.io/oncofind"
-"Bug Tracker" = "https://github.com/sanjeeviutchav/oncofind/issues"
+Homepage = "https://github.com/sanjeevi0078/oncofind"
+Documentation = "https://sanjeevi0078.github.io/oncofind"
+"Bug Tracker" = "https://github.com/sanjeevi0078/oncofind/issues"
 
 [tool.ruff]
 line-length = 88

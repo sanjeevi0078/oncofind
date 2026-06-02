@@ -73,7 +73,7 @@ ClinicalStore ──► DEGAnalyzer ──► volcano.html / heatmap.html
 ## Installation
 
 ```bash
-git clone https://github.com/sanjeeviutchav/oncofind
+git clone https://github.com/sanjeevi0078/oncofind
 cd oncofind
 pip install -e .
 ```
@@ -325,5 +325,5 @@ If you use oncofind in research, please cite:
 
 ```
 Sanjeevi Utchav. oncofind: Pan-cancer biomarker discovery pipeline. 2026.
-GitHub: https://github.com/sanjeeviutchav/oncofind
+GitHub: https://github.com/sanjeevi0078/oncofind
 ```
