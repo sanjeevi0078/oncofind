@@ -1,6 +1,6 @@
-# LinkedIn Post & Portfolio Social Media Kit
+# LinkedIn Post & Portfolio Social Media Kit — oncofind Release
 
-This file contains the final LinkedIn post copy and instructions for gathering the visual assets to make it highly expressive and high-standard.
+This file contains the final LinkedIn post copy and instructions for gathering the visual assets to showcase the `oncofind` Python CLI package.
 
 ---
 
@@ -9,67 +9,47 @@ This file contains the final LinkedIn post copy and instructions for gathering t
 **Where to paste it:** Copy the block below and paste it directly into the "Start a post" box on your **[LinkedIn Feed Page](https://www.linkedin.com/)**.
 
 ```text
-Genomics is an engineering problem disguised as biology. 
+Over the last few weeks, I’ve been diving deep into computational oncology and Python package development. The result is `oncofind`—a command-line pipeline designed to download, analyze, and validate pan-cancer gene biomarkers using real clinical and transcriptomic data. 
 
-Over the last few weeks, I’ve been building a project that bridges the gap between raw clinical datasets and production-grade software engineering. Today, I'm excited to share the monorepo showcasing two distinct applications: 
+I’m excited to share that version 0.1.0 is now live on PyPI:
+pip install oncofind
 
-1. 🔬 oncofind (Python CLI) — A pan-cancer biomarker discovery pipeline.
-2. 🎮 JargonQuest (React/TypeScript) — An interactive gaming UI for mastering technical jargon.
+Building this was a massive learning experience in resolving real-world bioinformatics and software engineering challenges:
 
-Here is the engineering breakdown of what went into building this:
+⚡ Scaling the analysis (10,000x speedup)
+Querying the GDC API and running differential expression across 60,000+ genes for hundreds of patients is computationally heavy. Standard gene-by-gene OLS regression loops in statsmodels took minutes to complete. By writing a fully vectorized multiple linear regression solve in NumPy and Pandas (controlling for patient age, sex, and pathologic stage), I got the run time down to under 17 seconds.
 
-🚀 1. Vectorized OLS Fallback & a 10,000x Speedup
-Processing 60,660 genes across NIH Genomic Data Commons (GDC) patient cohorts is computationally expensive. Standard gene-by-gene loops in statsmodels took minutes to run. I replaced them with a vectorized multiple linear regression solve in NumPy/Pandas (adjusting for clinical covariates like age, sex, and pathologic stage). The result? Running the entire matrix takes less than 17 seconds. 
+📊 Restoring statistical rigor
+To address the "p-hacking" problem common in patient survival analyses (testing arbitrary cutpoints until a significant p-value is found), I implemented a strict Bonferroni correction over all 17 tested percentile cutpoints. It ensures that survival correlations are genuinely significant, not just statistical noise.
 
-📊 2. Fighting P-Hacking in Survival Analysis
-Many genomic papers present "optimal cutpoints" for survival without correcting for multiple testing. In oncofind, I implemented a strict Bonferroni correction over all 17 tested percentile cutpoints. It filters out statistical noise, ensuring prognostic biomarkers hold true under rigorous validation.
+🔒 Secure, Keyless CI/CD
+Deploying the package was configured using PyPI's OIDC Trusted Publishing. By linking my GitHub repository workflow directly to PyPI, the deployment job requests short-lived, keyless tokens on every release tag push. No static API tokens or passwords are ever stored in the repository.
 
-💊 3. Live PyPI Release & Trusted Publishing (OIDC)
-I wanted this tool to be production-ready, meaning anyone can install it globally via `pip install oncofind`. I set up keyless OIDC Trusted Publishing via GitHub Actions. Push a tag -> GitHub requests a short-lived OIDC token -> PyPI verifies the claims and publishes automatically. No passwords or static API tokens stored.
+The pipeline downloads raw RNA-seq data from the NIH Genomic Data Commons, runs differential expression, computes my custom Cross-Cancer Consistency Score (CCCS) to track biomarker signals across multiple cohorts, and benchmarks candidates against the 723-gene Sanger COSMIC Cancer Gene Census.
 
-🎮 4. Gamified Frontend with JargonQuest
-To balance the CLI, I built a fast React 19 + Vite web app utilizing custom HSL color systems, dynamic memory matching arrays, and canvas-confetti animations. It helps developers and researchers master the very vocabulary used in systems engineering and cancer genomics.
+Check out the code, install the package, and try it out!
+💻 GitHub: https://github.com/sanjeevi0078/oncofind
+📦 PyPI: https://pypi.org/project/oncofind/
 
-Monorepo Architecture:
-- Python (Pandas, Statsmodels, Lifelines, DuckDB, Hatchling)
-- React 19, TypeScript, Vanilla CSS
-- Automated CI/CD workflows testing Python 3.10 through 3.13
-
-Check out the code or install the package to try it out:
-📦 PyPI: pip install oncofind
-💻 GitHub Repo: https://github.com/sanjeevi0078/oncofind
-
-Would love to hear your thoughts on OLS optimization or OIDC publishing workflows in the comments!
-
-#Bioinformatics #Python #ReactJS #SoftwareEngineering #DataScience #WebDevelopment #OpenSource
+#Bioinformatics #Python #OpenSource #Genomics #DataScience #SoftwareEngineering #PyPI
 ```
 
 ---
 
-## 🖼️ Picture Setup Instructions (Add 3 images to the post)
+## 🖼️ Picture Setup Instructions (Add 2 images to the post)
 
-To make this post look visually premium on LinkedIn, attach the following three images when creating the post:
+To make this post stand out, attach these two images from the repository:
 
-### Image 1: The Bioinformatic Plot Outputs (Existing Assets)
-* **What it is:** The actual volcano, heatmap, or survival curves generated by `oncofind`.
-* **Where to find it:** I have saved pre-generated high-quality PNGs directly in your project folder here:
+### Image 1: Interactive Bioinformatics Reports (Existing Asset)
+* **What it is:** High-quality scientific visualization generated by `oncofind`.
+* **Where to find it:** Open your local project folder and locate:
   * 🌋 Volcano Plot: `oncofind/docs/images/volcano.png` (absolute path: [volcano.png](file:///Users/sanjeeviutchav/bioinformaitcs/oncofind/docs/images/volcano.png))
   * 📈 Survival Curve: `oncofind/docs/images/survival.png` (absolute path: [survival.png](file:///Users/sanjeeviutchav/bioinformaitcs/oncofind/docs/images/survival.png))
-  * 🗺️ Heatmap: `oncofind/docs/images/heatmap.png` (absolute path: [heatmap.png](file:///Users/sanjeeviutchav/bioinformaitcs/oncofind/docs/images/heatmap.png))
-* **Action:** You can upload `volcano.png` or `survival.png` directly to LinkedIn as the first image.
+* **Recommendation:** Use `survival.png` or `volcano.png` as the primary image of the post.
 
-### Image 2: JargonQuest UI Screenshot (Take a quick screenshot)
-* **What it is:** The interactive React frontend game screen.
-* **How to get it:**
-  1. Open your terminal in the project root `/Users/sanjeeviutchav/bioinformaitcs`.
-  2. Start the local server: `npm run dev`
-  3. Open your browser to **`http://localhost:5173`**.
-  4. Capture a clean screenshot of the dark-themed game grid (on Mac: press `Cmd + Shift + 4` and drag over the browser window).
-* **Action:** Add this screenshot as the second image in the LinkedIn post.
-
-### Image 3: PyPI & GitHub Actions Polish (Optional but highly recommended)
-* **What it is:** Proof of packaging and CI/CD testing.
-* **How to get it:**
-  1. Go to your PyPI project page: [https://pypi.org/project/oncofind/](https://pypi.org/project/oncofind/) and take a screenshot of the top section with `pip install oncofind`.
-  2. (Optional) Go to your GitHub actions tab [https://github.com/sanjeevi0078/oncofind/actions](https://github.com/sanjeevi0078/oncofind/actions) and take a screenshot showing the green "Success" checkmark.
-* **Action:** Add this as the third image in the LinkedIn post.
+### Image 2: PyPI Live Package Page & CLI Help (Screenshot)
+* **What it is:** Proof of a live, installable package.
+* **How to get it:** 
+  1. Open your browser to the PyPI page: [https://pypi.org/project/oncofind/](https://pypi.org/project/oncofind/)
+  2. Take a screenshot of the top header showing `pip install oncofind`.
+  3. Combine it or post it alongside the CLI ASCII help text screenshot from your terminal.
